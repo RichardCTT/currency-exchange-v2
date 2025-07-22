@@ -1,0 +1,25 @@
+{
+  "name": "currency-exchange-v2",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Program for neueda training",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RichardCTT/currency-exchange-v2.git"
+  },
+  "author": "Richard Chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RichardCTT/currency-exchange-v2/issues"
+  },
+  "homepage": "https://github.com/RichardCTT/currency-exchange-v2#readme",
+  "devDependencies": {
+    "jest": "^30.0.5",
+    "prime-number-check": "^1.0.1"
+  }
+}
