@@ -3,7 +3,7 @@ create table user(
     password varchar(255),
     email varchar(255) unique,
     username varchar(255) unique
-)
+);
 
 create table currencies(
     id int primary key auto_increment,
