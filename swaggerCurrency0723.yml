@@ -1,69 +1,22 @@
 openapi: 3.0.0
 info:
-  title: Currency API
+  title: Currency API (MVP)
   version: 1.0.0
-  description: A simple API to manage currencies.
+  description: A minimal viable product (MVP) version of the Currency API.
 
 paths:
-  # 1. Get all active currencies
   /currencies:
     get:
-      summary: List all active currencies
+      summary: Get all currencies
       responses:
         '200':
-          description: List of active currencies
+          description: A list of all currencies
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Currency'
-
-  # 2. Query currencies with filters
-  /currencies/search:
-    get:
-      summary: Fetch currency by fields
-      parameters:
-        - name: iso_code
-          in: query
-          schema:
-            type: string
-          description: ISO currency code (e.g., USD)
-        - name: id
-          in: query
-          schema:
-            type: integer
-          description: Currency ID
-        - name: name
-          in: query
-          schema:
-            type: string
-          description: Currency name (e.g., "Dollar")
-        - name: symbol
-          in: query
-          schema:
-            type: string
-          description: Currency symbol (e.g., "$")
-        - name: country
-          in: query
-          schema:
-            type: string
-          description: Country of origin
-        - name: is_active
-          in: query
-          schema:
-            type: boolean
-          description: Whether the currency is active
-      responses:
-        '200':
-          description: Matching currency details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Currency'
-
-  # 3. Add a new currency
-  /currencies-add:
     post:
       summary: Add a new currency
       requestBody:
@@ -71,53 +24,80 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Currency'
+              $ref: '#/components/schemas/CurrencyInput'
       responses:
         '201':
           description: Currency successfully created
 
-  # 4. Disable a currency (soft delete)
-  /currencies/delete:
+  /currencies/search:
     get:
-      summary: Disable a currency
+      summary: Search currencies by filters
       parameters:
-        - name: id
+        - name: iso_code
           in: query
-          required: true
           schema:
-            type: integer
+            type: string
+          description: ISO code (e.g. USD)
+        - name: name
+          in: query
+          schema:
+            type: string
+          description: Currency name
+        - name: symbol
+          in: query
+          schema:
+            type: string
+          description: Currency symbol (e.g. $)
+        - name: country
+          in: query
+          schema:
+            type: string
+          description: Country name
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+          description: Whether currency is active
       responses:
         '200':
-          description: Currency has been disabled
+          description: Matching currencies
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Currency disabled"
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
 
-  # 5. Update currency fields
-  /currencies/update:
-    post:
-      summary: Update currency fields
+  /currencies/{id}:
+    put:
+      summary: Update a currency by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  description: ID of the currency to update
-                fields:
-                  type: object
-                  description: Key-value pairs of fields to update
+              $ref: '#/components/schemas/CurrencyInput'
       responses:
         '200':
-          description: Fields updated successfully
+          description: Currency updated successfully
+
+    delete:
+      summary: Delete a currency by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Currency deleted successfully
 
 components:
   schemas:
@@ -127,6 +107,31 @@ components:
         id:
           type: integer
           example: 1
+        iso_code:
+          type: string
+          example: "USD"
+        name:
+          type: string
+          example: "US Dollar"
+        symbol:
+          type: string
+          example: "$"
+        country:
+          type: string
+          example: "United States"
+        is_active:
+          type: boolean
+          example: true
+
+    CurrencyInput:
+      type: object
+      required:
+        - iso_code
+        - name
+        - symbol
+        - country
+        - is_active
+      properties:
         iso_code:
           type: string
           example: "USD"
