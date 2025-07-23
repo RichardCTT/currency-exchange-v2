@@ -99,41 +99,6 @@ paths:
         '400':
           description: Missing or invalid username query
 
-components:
-  schemas:
-    UserInput:
-      type: object
-      required: [user_id, username, email, password]
-      properties:
-        user_id:
-          type: integer
-          format: int64
-        username:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-
-    UserProfile:
-      type: object
-      properties:
-        user_id:
-          type: integer
-        username:
-          type: string
-        email:
-          type: string
-
-    UserUpdate:
-      type: object
-      required: [username, email]
-      properties:
-        username:
-          type: string
-        email:
-          type: string
-
   /currencies:
     get:
       summary: Get all currencies
@@ -251,3 +216,61 @@ components:
         is_active:
           type: boolean
           example: true
+          
+    CurrencyInput:
+      type: object
+      required:
+        - iso_code
+        - name
+        - symbol
+        - country
+        - is_active
+      properties:
+        iso_code:
+          type: string
+          example: "USD"
+        name:
+          type: string
+          example: "US Dollar"
+        symbol:
+          type: string
+          example: "$"
+        country:
+          type: string
+          example: "United States"
+        is_active:
+          type: boolean
+          example: true
+
+    UserInput:
+      type: object
+      required: [user_id, username, email, password]
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+
+    UserUpdate:
+      type: object
+      required: [username, email]
+      properties:
+        username:
+          type: string
+        email:
+          type: string
