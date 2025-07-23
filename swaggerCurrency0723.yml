@@ -1,0 +1,144 @@
+openapi: 3.0.0
+info:
+  title: Currency API
+  version: 1.0.0
+  description: A simple API to manage currencies.
+
+paths:
+  # 1. Get all active currencies
+  /currencies:
+    get:
+      summary: List all active currencies
+      responses:
+        '200':
+          description: List of active currencies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+
+  # 2. Query currencies with filters
+  /currencies/search:
+    get:
+      summary: Fetch currency by fields
+      parameters:
+        - name: iso_code
+          in: query
+          schema:
+            type: string
+          description: ISO currency code (e.g., USD)
+        - name: id
+          in: query
+          schema:
+            type: integer
+          description: Currency ID
+        - name: name
+          in: query
+          schema:
+            type: string
+          description: Currency name (e.g., "Dollar")
+        - name: symbol
+          in: query
+          schema:
+            type: string
+          description: Currency symbol (e.g., "$")
+        - name: country
+          in: query
+          schema:
+            type: string
+          description: Country of origin
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+          description: Whether the currency is active
+      responses:
+        '200':
+          description: Matching currency details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Currency'
+
+  # 3. Add a new currency
+  /currencies-add:
+    post:
+      summary: Add a new currency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Currency'
+      responses:
+        '201':
+          description: Currency successfully created
+
+  # 4. Disable a currency (soft delete)
+  /currencies/delete:
+    get:
+      summary: Disable a currency
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Currency has been disabled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Currency disabled"
+
+  # 5. Update currency fields
+  /currencies/update:
+    post:
+      summary: Update currency fields
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: ID of the currency to update
+                fields:
+                  type: object
+                  description: Key-value pairs of fields to update
+      responses:
+        '200':
+          description: Fields updated successfully
+
+components:
+  schemas:
+    Currency:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        iso_code:
+          type: string
+          example: "USD"
+        name:
+          type: string
+          example: "US Dollar"
+        symbol:
+          type: string
+          example: "$"
+        country:
+          type: string
+          example: "United States"
+        is_active:
+          type: boolean
+          example: true
