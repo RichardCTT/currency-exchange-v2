@@ -1,11 +1,8 @@
 import request from 'supertest';
-import express from 'express';
 import pool from '../config/db.js';
+import router from '../user_post.js';
 
 describe('POST /users', () => {
-  const router = express();
-  router.use(express.json());
-
   afterAll(async () => {
     await pool.end(); // close the DB pool after all tests
   });
