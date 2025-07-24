@@ -6,7 +6,7 @@ async function getUserProfile(userId) {
   const conn = await pool.getConnection();
 
   try {
-    const query = 'SELECT * FROM user WHERE user_id = ?';
+    const query = 'SELECT * FROM users WHERE user_id = ?';
     const [rows] = await conn.query(query, [userId]);
 
     if (rows.length > 0) {
