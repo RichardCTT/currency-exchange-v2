@@ -5,7 +5,12 @@ const router = express.Router();
 const conn = await pool.getConnection();
 
 router.delete('/:id', (req, res) => {
-    const userId = req.params.id
+    // let userId = req.params.id;
+    const userId = parseInt(req.params.id);
+    if(isNaN(userId))
+    {
+        return res.status(500).json("invalid userId!");
+    }
     try {
         const queryResult = conn.query("delete from user where user_id = ?", [userId]);
         if (queryResult.affectRows === 0) {
@@ -17,6 +22,7 @@ router.delete('/:id', (req, res) => {
     }
     catch (error) {
         console.log("delete failed");
+        res.status(500).json("delete failed");
     } finally {
         if (conn) {
             conn.release();
