@@ -1,7 +1,7 @@
 create database currencyDataBase;
 use currencyDataBase;
 
-create table user(
+create table users(
     user_id int primary key auto_increment,
     password varchar(255),
     email varchar(255) unique,
@@ -17,12 +17,12 @@ create table currencies(
     is_active boolean default true
 );
 
-insert user(user_id, password, email, username) values(1, "12345678","123456789@qq.com", "Ric");
-insert user(user_id, password, email, username) values(2, "12345678","133456789@qq.com", "r1");
-insert user(user_id, password, email, username) values(3, "12345678","125456789@qq.com", "r2");
-insert user(user_id, password, email, username) values(4, "12345678","123556789@qq.com", "r3");
-insert user(user_id, password, email, username) values(5, "12345678","123656789@qq.com", "r4");
-insert user(user_id, password, email, username) values(6, "12345678", "122456789@qq.com", "r5");
+insert users(user_id, password, email, username) values(1, "12345678","123456789@qq.com", "Ric");
+insert users(user_id, password, email, username) values(2, "12345678","133456789@qq.com", "r1");
+insert users(user_id, password, email, username) values(3, "12345678","125456789@qq.com", "r2");
+insert users(user_id, password, email, username) values(4, "12345678","123556789@qq.com", "r3");
+insert users(user_id, password, email, username) values(5, "12345678","123656789@qq.com", "r4");
+insert users(user_id, password, email, username) values(6, "12345678", "122456789@qq.com", "r5");
 
 insert currencies(id, iso_code, name, symbol, country, is_active) values(1, "1", "usa", "$", "USA", true);
 insert currencies(id, iso_code, name, symbol, country, is_active) values(2, "2", "china", "¥", "CHINA", true);
