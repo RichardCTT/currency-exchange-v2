@@ -15,7 +15,7 @@ router.post('/users', async(req, res) => {
     return;
 }
     
-  const sql = 'INSERT INTO user (password, email, username) VALUES (?, ?, ?)';
+  const sql = 'INSERT INTO users (password, email, username) VALUES (?, ?, ?)';
   const values = [req.body.password, req.body.email, req.body.username];
 
     try {
