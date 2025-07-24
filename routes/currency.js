@@ -106,6 +106,33 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+/***
+ * Delete a currency by ID
+ */
+router.delete('/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: '无效的 ID' });
+  }
+
+  try {
+    const [result] = await pool.execute(
+      `DELETE FROM currencies WHERE id = ?`,
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'No currency found with that ID' });
+    }
+
+    res.json({ message: 'Delete successful' });
+  } catch (err) {
+    console.error('Delete failed:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 export default router;
