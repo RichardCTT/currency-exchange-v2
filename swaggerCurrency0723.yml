@@ -1,0 +1,276 @@
+openapi: 3.0.0
+info:
+  title: Currency Exchange - OpenAPI 3.0
+  version: 1.0.0
+  description: CRUD and search for users resources
+
+paths:
+  /users:
+    post:
+      tags: [users]
+      summary: Create a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+
+  /users/{user_id}:
+    get:
+      tags: [users]
+      summary: Return the profile of a user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '404':
+          description: User not found
+
+    put:
+      tags: [users]
+      summary: Edit the profile of a user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '201':
+          description: Successful operation
+        '404':
+          description: User not found
+
+    delete:
+      tags: [users]
+      summary: Delete a user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+
+  /users/search:
+    get:
+      tags: [users]
+      summary: Search users by username.
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful search operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Missing or invalid username query
+
+  /currencies:
+    get:
+      summary: Get all currencies
+      responses:
+        '200':
+          description: A list of all currencies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+    post:
+      summary: Add a new currency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyInput'
+      responses:
+        '201':
+          description: Currency successfully created
+
+  /currencies/search:
+    get:
+      summary: Search currencies by filters
+      parameters:
+        - name: iso_code
+          in: query
+          schema:
+            type: string
+          description: ISO code (e.g. USD)
+        - name: name
+          in: query
+          schema:
+            type: string
+          description: Currency name
+        - name: symbol
+          in: query
+          schema:
+            type: string
+          description: Currency symbol (e.g. $)
+        - name: country
+          in: query
+          schema:
+            type: string
+          description: Country name
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+          description: Whether currency is active
+      responses:
+        '200':
+          description: Matching currencies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Currency'
+
+  /currencies/{id}:
+    put:
+      summary: Update a currency by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyInput'
+      responses:
+        '200':
+          description: Currency updated successfully
+
+    delete:
+      summary: Delete a currency by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Currency deleted successfully
+
+components:
+  schemas:
+    Currency:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        iso_code:
+          type: string
+          example: "USD"
+        name:
+          type: string
+          example: "US Dollar"
+        symbol:
+          type: string
+          example: "$"
+        country:
+          type: string
+          example: "United States"
+        is_active:
+          type: boolean
+          example: true
+          
+    CurrencyInput:
+      type: object
+      required:
+        - iso_code
+        - name
+        - symbol
+        - country
+        - is_active
+      properties:
+        iso_code:
+          type: string
+          example: "USD"
+        name:
+          type: string
+          example: "US Dollar"
+        symbol:
+          type: string
+          example: "$"
+        country:
+          type: string
+          example: "United States"
+        is_active:
+          type: boolean
+          example: true
+
+    UserInput:
+      type: object
+      required: [user_id, username, email, password]
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+
+    UserUpdate:
+      type: object
+      required: [username, email]
+      properties:
+        username:
+          type: string
+        email:
+          type: string
