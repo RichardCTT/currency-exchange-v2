@@ -4,7 +4,7 @@ async function getUserProfile(username) {
   const conn = await pool.getConnection();
 
   try {
-    const query = 'SELECT * FROM user WHERE username = ?';
+    const query = 'SELECT * FROM users WHERE username = ?';
     const [rows] = await conn.query(query, [username]);
 
     if (rows.length > 0) {
