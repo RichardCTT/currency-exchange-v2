@@ -5,7 +5,7 @@
   "description": "Program for neueda training",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "jest"
   },
   "repository": {
@@ -19,7 +19,12 @@
   },
   "homepage": "https://github.com/RichardCTT/currency-exchange-v2#readme",
   "devDependencies": {
-    "jest": "^30.0.5",
-    "prime-number-check": "^1.0.1"
+    "jest": "^30.0.5"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mysql": "^2.18.1"
   }
 }
