@@ -1,6 +1,7 @@
 import express from 'express';
 import indexRouter from './routes/index.js';
 import pool from './config/db.js';
+import userRouter from './routes/user.js'
 
 const app = express();
 
@@ -12,6 +13,7 @@ async function start() {
 
     // Use Router
     app.use('/', indexRouter);
+    app.use('/user', userRouter)
 
     app.listen(3000, () => {
       console.log('🚀 服务器启动：http://localhost:3000');
