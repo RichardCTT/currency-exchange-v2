@@ -1,6 +1,5 @@
 import pool from './config/db.js';
 
-
 async function getUserProfile(userId) {
 
   const conn = await pool.getConnection();
