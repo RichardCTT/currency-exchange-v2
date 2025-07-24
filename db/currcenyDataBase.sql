@@ -15,7 +15,7 @@ create table currencies(
     symbol varchar(5),
     country varchar(100),
     is_active boolean default true
-)
+);
 
 insert user(user_id, password, email, username) values(1, "12345678","123456789@qq.com", "Ric");
 insert user(user_id, password, email, username) values(2, "12345678","133456789@qq.com", "r1");
