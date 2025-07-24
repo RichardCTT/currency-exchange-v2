@@ -44,4 +44,38 @@ router.get('/', async (req, res) => {
 });
 
 
+/**
+ * Author: Richard
+ * Update a currency by ID
+ * 
+ */
+router.put('/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  const { name, symbol, country, is_active } = req.body;
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: '无效的 ID' });
+  }
+
+  try {
+    const [result] = await pool.execute(
+      `UPDATE currencies
+       SET name = ?, symbol = ?, country = ?, is_active = ?
+       WHERE id = ?`,
+      [name, symbol, country, is_active, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: '未找到该货币 ID' });
+    }
+
+    res.json({ message: '更新成功' });
+  } catch (err) {
+    console.error('更新失败:', err);
+    res.status(500).json({ error: '服务器内部错误' });
+  }
+});
+
+
+
 export default router;
