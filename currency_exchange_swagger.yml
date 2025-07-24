@@ -2,12 +2,12 @@ openapi: 3.0.0
 info:
   title: Currency Exchange - OpenAPI 3.0
   version: 1.0.0
-  description: CRUD and search for users resources
+  description: CRUD and search for /users and /currencies resources
 
 paths:
   /users:
     post:
-      tags: [users]
+      tags: [user]
       summary: Create a new user.
       requestBody:
         required: true
@@ -23,7 +23,7 @@ paths:
 
   /users/{user_id}:
     get:
-      tags: [users]
+      tags: [user]
       summary: Return the profile of a user.
       parameters:
         - name: user_id
@@ -42,7 +42,7 @@ paths:
           description: User not found
 
     put:
-      tags: [users]
+      tags: [user]
       summary: Edit the profile of a user.
       parameters:
         - name: user_id
@@ -63,7 +63,7 @@ paths:
           description: User not found
 
     delete:
-      tags: [users]
+      tags: [user]
       summary: Delete a user.
       parameters:
         - name: user_id
@@ -79,7 +79,7 @@ paths:
 
   /users/search:
     get:
-      tags: [users]
+      tags: [user]
       summary: Search users by username.
       parameters:
         - name: username
@@ -101,6 +101,7 @@ paths:
 
   /currencies:
     get:
+      tags: [currency]
       summary: Get all currencies
       responses:
         '200':
@@ -112,6 +113,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Currency'
     post:
+      tags: [currency]
       summary: Add a new currency
       requestBody:
         required: true
@@ -125,6 +127,7 @@ paths:
 
   /currencies/search:
     get:
+      tags: [currency]
       summary: Search currencies by filters
       parameters:
         - name: iso_code
@@ -164,6 +167,7 @@ paths:
 
   /currencies/{id}:
     put:
+      tags: [currency]
       summary: Update a currency by ID
       parameters:
         - name: id
@@ -182,6 +186,7 @@ paths:
           description: Currency updated successfully
 
     delete:
+      tags: [currency]
       summary: Delete a currency by ID
       parameters:
         - name: id
