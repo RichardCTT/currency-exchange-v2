@@ -43,6 +43,36 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * Author: Richard
+ * Get a currency by ID
+ */
+router.get('/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid ID' });
+  }
+
+  try {
+    const [rows] = await pool.execute(
+      `SELECT id, iso_code, name, symbol, country, is_active
+       FROM currencies
+       WHERE id = ?`,
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'No currency found' });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('Query failed:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 /**
  * Author: Richard
