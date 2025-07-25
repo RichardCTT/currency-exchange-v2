@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Currency Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>💱 Currency Manager</h1>
+
+    <!-- Add Currency -->
+    <section>
+      <h2>➕ Add New Currency</h2>
+      <form id="addForm">
+        <input type="text" name="iso_code" placeholder="ISO Code" required />
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="text" name="symbol" placeholder="Symbol" required />
+        <input type="text" name="country" placeholder="Country" required />
+        <label><input type="checkbox" name="is_active" /> Is Active</label>
+        <button type="submit">Add</button>
+      </form>
+    </section>
+
+    <!-- Update Currency -->
+    <section>
+      <h2>🔁 Update Currency</h2>
+      <form id="updateForm">
+        <input type="number" name="id" placeholder="Currency ID" required />
+        <input type="text" name="name" placeholder="New Name" required />
+        <input type="text" name="symbol" placeholder="New Symbol" required />
+        <input type="text" name="country" placeholder="New Country" required />
+        <label><input type="checkbox" name="is_active" /> Is Active</label>
+        <button type="submit">Update</button>
+      </form>
+    </section>
+
+    <!-- View Currencies -->
+    <section>
+      <h2>📋 All Currencies</h2>
+      <button id="refresh">Refresh</button>
+      <table id="currencyTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ISO</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Country</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/currency';
+
+    // Get and render all currencies
+    async function fetchCurrencies() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      const tbody = document.querySelector('#currencyTable tbody');
+      tbody.innerHTML = '';
+      data.forEach((cur) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${cur.id}</td>
+          <td>${cur.iso_code}</td>
+          <td>${cur.name}</td>
+          <td>${cur.symbol}</td>
+          <td>${cur.country}</td>
+          <td>${cur.is_active ? '✔️' : '❌'}</td>
+          <td>
+            <button onclick="deleteCurrency(${cur.id})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function deleteCurrency(id) {
+      await fetch(`\${API_URL}/\${id}`, { method: 'DELETE' });
+      fetchCurrencies();
+    }
+
+    // Add new currency
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const payload = {
+        iso_code: formData.get('iso_code'),
+        name: formData.get('name'),
+        symbol: formData.get('symbol'),
+        country: formData.get('country'),
+        is_active: formData.get('is_active') === 'on'
+      };
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      form.reset();
+      fetchCurrencies();
+    });
+
+    // Update currency by ID
+    document.getElementById('updateForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const id = formData.get('id');
+      const payload = {
+        name: formData.get('name'),
+        symbol: formData.get('symbol'),
+        country: formData.get('country'),
+        is_active: formData.get('is_active') === 'on'
+      };
+      await fetch(`\${API_URL}\${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      form.reset();
+      fetchCurrencies();
+    });
+
+    document.getElementById('refresh').addEventListener('click', fetchCurrencies);
+
+    // Initial load
+    fetchCurrencies();
+  </script>
+</body>
+</html>
