@@ -2,6 +2,7 @@ import express from 'express';
 import indexRouter from './routes/index.js';
 import currencyRouter from './routes/currency.js';
 import pool from './config/db.js';
+import cors from 'cors';
 
 const app = express();
 
@@ -13,11 +14,10 @@ async function start() {
 
 
     app.use(express.json());
+    app.use(cors());
     // Use Router
     app.use('/', indexRouter);
     app.use('/currency', currencyRouter);
-
-    
 
 
     app.listen(3000, () => {
