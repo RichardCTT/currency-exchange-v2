@@ -1,5 +1,6 @@
-import pool from './config/db';
+import pool from '../config/db.js';
 import express from 'express';
+import cors from 'cors';
 
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -8,8 +9,9 @@ function isValidEmail(email) {
 
 const router = express();
 router.use(express.json());
+router.use(cors());
 
-router.post('/users', async(req, res) => {
+router.post('/', async(req, res) => {
   if (!isValidEmail(req.body.email)){
     res.status(400).json({message: "Invalid input"});
     return;
