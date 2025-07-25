@@ -1,6 +1,7 @@
 import express from 'express';
 import indexRouter from './routes/index.js';
 import currencyRouter from './routes/currency.js';
+import userRouter from './routes/user.js';
 import pool from './config/db.js';
 import cors from 'cors';
 
@@ -18,6 +19,7 @@ async function start() {
     // Use Router
     app.use('/', indexRouter);
     app.use('/currency', currencyRouter);
+    app.use('/user', userRouter);
 
 
     app.listen(3000, () => {
